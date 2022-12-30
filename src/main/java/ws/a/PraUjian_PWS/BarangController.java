@@ -26,6 +26,7 @@ public class BarangController {
     Barang data = new Barang();
     BarangJpaController BarangJpa = new BarangJpaController();
 
+    //menampilkan data by id
     @RequestMapping("/getName/{id}")
     public String getName(@PathVariable("id") int id) {
         try {
@@ -36,11 +37,14 @@ public class BarangController {
         }
     }
 
+    //menampilkan semua data
     @RequestMapping("/getAll")
     public List<Barang> viewAll() {
         return BarangJpa.findBarangEntities();
     }
-
+    
+    
+//menghapus semua data by id
     @RequestMapping("/deleteName/{id}")
     public String deleteName(@PathVariable("id") int id) {
         try {
