@@ -5,11 +5,13 @@
 package ws.a.PraUjian_PWS;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import javax.persistence.EntityManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,16 +38,27 @@ public class BarangController {
             return "Data Not Found";
         }
     }
+    
+    //method untuk create Barang
+    public String createBarang(@RequestBody Barang barang) {
+        try {
+            BarangJpa.create(barang);
+            //return ketikan barang berhasil di buat
+            return "Barang telah ditambahakan ";
+        } catch (Exception e) {
+            //return ketika mnemabahkan data dgn id yang telah dipakai
+            return " id telah dipakai";
+        }
+    }
 
     //menampilkan semua data
     @RequestMapping("/getAll")
     public List<Barang> viewAll() {
         return BarangJpa.findBarangEntities();
     }
-    
-    
+
 //menghapus semua data by id
-    @RequestMapping("/deleteName/{id}")
+    @RequestMapping("/deleteBarang/{id}")
     public String deleteName(@PathVariable("id") int id) {
         try {
             BarangJpa.destroy(id);
