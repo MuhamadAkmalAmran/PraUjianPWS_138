@@ -38,7 +38,7 @@ public class BarangController {
             return "Data Not Found";
         }
     }
-    
+
     //mapping untuk createBarang
     @PostMapping("/createBarang")
     //method untuk create Barang
@@ -50,6 +50,60 @@ public class BarangController {
         } catch (Exception e) {
             //return ketika mnemabahkan data dgn id yang telah dipakai
             return " id telah dipakai";
+        }
+    }
+    
+    //mapping untuk updateBarang
+    @PutMapping("/updateBarang/{id}")
+    //method untuk updateBarang
+    public String updateBarang(@PathVariable("id") int id, @RequestBody Barang barang) {
+        try {
+            //deklarasi data untuk mencari barang berdasarkan id
+            data = BarangJpa.findBarang(id);
+
+            //untuk ngset id berdasarkan id yang telah diambil
+            barang.setId(id);
+
+            //deklarasi Request Body Barang
+            Barang brg = new Barang();
+
+            //deklarasa brg untuk mencari barang berdasarkan id
+            brg = BarangJpa.findBarang(id);
+
+            //kondisi ketika update barang yang tidak ada
+            if (barang.getId() != id) {
+                return " Barang tidak ditemukan";
+            } //kondisi ketika mengupdate hanya untuk nama barang
+            else if (barang.getName() == null) {
+                barang.setName(data.getName());
+                BarangJpa.edit(barang);
+                brg = BarangJpa.findBarang(id);
+                return "Data telah diupdate!!!  "
+                        + " \nid :  " + brg.getId()
+                        + "\nname : " + brg.getName()
+                        + "\njumlah : " + brg.getJumlah();
+            } //kondisi ketika mengupdate hanya untuk jumlah barang
+            else if (barang.getJumlah() == null) {
+                barang.setJumlah(data.getJumlah());
+                BarangJpa.edit(barang);
+                brg = BarangJpa.findBarang(id);
+                return "Data telah diupdate!!!  "
+                        + " \nid :  " + brg.getId()
+                        + "\nname : " + brg.getName()
+                        + "\njumlah : " + brg.getJumlah();
+            } //kondisi ketika harus update nama dan jumlah 
+            else if (barang.getName() != null && barang.getJumlah() != null) {
+                BarangJpa.edit(barang);
+                brg = BarangJpa.findBarang(id);
+                return "Data telah diupdate!!!  "
+                        + " \nid :  " + brg.getId()
+                        + "\nname : " + brg.getName()
+                        + "\njumlah : " + brg.getJumlah();
+            } else {
+                return "Data tidak ditemukan";
+            }
+        } catch (Exception e) {
+            return "Data tidak ada";
         }
     }
 
