@@ -39,6 +39,8 @@ public class BarangController {
         }
     }
     
+    //mapping untuk createBarang
+    @PostMapping("/createBarang")
     //method untuk create Barang
     public String createBarang(@RequestBody Barang barang) {
         try {
